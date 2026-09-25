@@ -29,11 +29,14 @@ async function createRequest(conn, { passengerId, pickupZoneId, destinationZoneI
   );
   const id = result.insertId;
   await insertHistory(conn, id, null, 'REQUESTED', passengerId, 'Passenger requested ride');
-  return findRequestById(id);
+  // Read back on the SAME connection/transaction, not the shared pool: under
+  // MySQL's default REPEATABLE READ isolation, a different connection would
+  // not see this row until we commit, and would wrongly get null here.
+  return findRequestByIdWith(conn, id);
 }
 
-async function findRequestById(id) {
-  const [rows] = await pool.query(
+async function findRequestByIdWith(executor, id) {
+  const [rows] = await executor.query(
     `SELECT rr.*, zp.name AS pickup_zone_name, zd.name AS destination_zone_name,
             zd.corridor_group AS destination_corridor_group
      FROM ride_requests rr
@@ -43,6 +46,10 @@ async function findRequestById(id) {
     [id]
   );
   return rows[0] || null;
+}
+
+async function findRequestById(id) {
+  return findRequestByIdWith(pool, id);
 }
 
 async function findRequestByIdForUpdate(conn, id) {
@@ -99,7 +106,8 @@ async function findActiveRideForTesla(teslaId) {
 
 async function getRideMembers(rideId) {
   const [rows] = await pool.query(
-    `SELECT rr.*, zp.name AS pickup_zone_name, zd.name AS destination_zone_name, u.name AS passenger_name
+    `SELECT rr.*, zp.name AS pickup_zone_name, zd.name AS destination_zone_name,
+            zd.corridor_group AS destination_corridor_group, u.name AS passenger_name
      FROM ride_requests rr
      JOIN zones zp ON zp.id = rr.pickup_zone_id
      JOIN zones zd ON zd.id = rr.destination_zone_id
