@@ -165,7 +165,7 @@ erDiagram
     }
     PAYMENTS {
         int id PK
-        int ride_request_id FK UK
+        int ride_request_id FK "one row per request, enforced UNIQUE"
         enum method
         int amount_paisa
         enum status "PENDING | PAID"
