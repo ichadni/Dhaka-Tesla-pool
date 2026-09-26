@@ -234,12 +234,17 @@ optimization); good enough for an MVP, documented as a next improvement.
 ### Fare model (Section 5)
 
 ```
-passengerFare = baseFare + distanceCharge - poolDiscount
+passengerFare = seatsRequested × (baseFare + distanceCharge - poolDiscount)
 
-baseFare       = 3000 paisa                         (flat, 30 BDT)
-distanceCharge = 1500 paisa/km × distanceKm          (rounded to nearest paisa)
+baseFare       = 3000 paisa                         (flat, 30 BDT, per seat)
+distanceCharge = 1500 paisa/km × distanceKm          (rounded to nearest paisa, per seat)
 poolDiscount   = 20% × (baseFare + distanceCharge)   if pooled, else 0
 ```
+
+**Assumption (Section 17):** a passenger booking 2 or 3 seats is occupying
+that many of Bullet's seats — capacity that could otherwise have gone to
+another pooled rider — so they're charged per seat, not one flat fare
+regardless of how many seats they hold.
 
 **Worked example — Nusrat & Rafiq, hand-verifiable:**
 

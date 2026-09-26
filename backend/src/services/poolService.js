@@ -34,7 +34,7 @@ async function requestRide({ passengerId, pickupZoneId, destinationZoneId, seats
   if (seats < 1 || seats > 3) throw badRequest('seatsRequested must be between 1 and 3');
 
   const km = distanceKm(pickup, destination);
-  const fare = computeFare(km, false); // estimate shown before any pooling is known
+  const fare = computeFare(km, false, seats); // estimate shown before any pooling is known
 
   return withTransaction((conn) =>
     rideRepo.createRequest(conn, {

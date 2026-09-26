@@ -21,9 +21,10 @@ const BASE_FARE_PAISA = 3000; // 30 BDT flat pickup fare
 const PER_KM_PAISA = 1500; // 15 BDT / km
 const POOL_DISCOUNT_RATE = 0.2; // 20% off for pooled passengers
 
-function computeFare(distanceKm, isPooled) {
-  const baseFare = BASE_FARE_PAISA;
-  const distanceCharge = Math.round(PER_KM_PAISA * distanceKm);
+function computeFare(distanceKm, isPooled, seatsRequested = 1) {
+  const seats = Math.max(1, Number(seatsRequested) || 1);
+  const baseFare = BASE_FARE_PAISA * seats;
+  const distanceCharge = Math.round(PER_KM_PAISA * distanceKm) * seats;
   const subtotal = baseFare + distanceCharge;
   const poolDiscount = isPooled ? Math.round(subtotal * POOL_DISCOUNT_RATE) : 0;
   const totalFare = subtotal - poolDiscount;

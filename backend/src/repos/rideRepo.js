@@ -187,12 +187,12 @@ async function attachRequestToRide(conn, rideId, requestId, seatsRequested, capa
 /** Recompute each active member's fare after the pool's membership changes. */
 async function recomputeFaresForRide(conn, rideId, computeFare) {
   const [members] = await conn.query(
-    `SELECT id, distance_km FROM ride_requests WHERE ride_id = ? AND status NOT IN ('CANCELLED')`,
+`SELECT id, distance_km, seats_requested FROM ride_requests WHERE ride_id = ? AND status NOT IN ('CANCELLED')`,
     [rideId]
   );
   const isPooled = members.length > 1;
   for (const m of members) {
-    const fare = computeFare(Number(m.distance_km), isPooled);
+    const fare = computeFare(Number(m.distance_km), isPooled, m.seats_requested);
     await conn.query(
       `UPDATE ride_requests
        SET base_fare_paisa = ?, distance_charge_paisa = ?, pool_discount_paisa = ?, total_fare_paisa = ?
