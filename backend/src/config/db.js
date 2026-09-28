@@ -1,3 +1,4 @@
+const fs = require('fs');
 const mysql = require('mysql2/promise');
 
 // A single shared connection pool. mysql2's pool gives us real MySQL
@@ -9,6 +10,12 @@ const pool = mysql.createPool({
   user: process.env.DB_USER || 'root',
   password: process.env.DB_PASSWORD || '',
   database: process.env.DB_NAME || 'dhaka_tesla_pool',
+
+  ssl: {
+  ca: fs.readFileSync('/app/certs/ca.pem'),
+  rejectUnauthorized: true
+},
+
   waitForConnections: true,
   connectionLimit: 10,
   decimalNumbers: true,
