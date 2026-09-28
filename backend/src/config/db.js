@@ -11,8 +11,10 @@ const pool = mysql.createPool({
   password: process.env.DB_PASSWORD || '',
   database: process.env.DB_NAME || 'dhaka_tesla_pool',
 
-  ssl: {
-  ca: fs.readFileSync('/app/certs/ca.pem'),
+ ssl: {
+  ca: process.env.DB_CA_CERT
+    ? process.env.DB_CA_CERT.replace(/\\n/g, '\n')
+    : fs.readFileSync('/app/certs/ca.pem'),
   rejectUnauthorized: true
 },
 
