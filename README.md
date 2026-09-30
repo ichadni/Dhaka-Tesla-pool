@@ -1,6 +1,7 @@
 # Dhaka Tesla Pool 🚗⚡
 
 > Share a seat. Split the fare. Survive Dhaka traffic.
+> **Live Demo:** [Open Dhaka Tesla Pool](https://dhaka-tesla-pool-tawny.vercel.app/)
 
 An MVP ride-pooling app built around three actors — **Passenger** (Nusrat,
 Rafiq, Shirin), **Driver/Tesla** (Jashim & his three-seat "Tesla" Bullet),
