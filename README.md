@@ -430,8 +430,7 @@ The deployed frontend communicates with the Express backend hosted on Render, wh
 
 For local development and reproducibility, the complete stack can still be started using:
 
-```bash
-docker compose up --build
+
 
 ### API overview
 
