@@ -54,12 +54,7 @@ capacity that can never be exceeded.
 - A full, append-only status history per ride request explains exactly
   what happened after the fact
 
-### Screenshots
 
-_Add screenshots/GIFs of the running app here before submitting — e.g. the
-passenger request flow, the driver accept/pool view, and the fare split._
-
----
 
 ## 2. Architecture
 
@@ -425,16 +420,18 @@ start / complete.
 
 ## 8. Deployment
 
-**Constraint:** this challenge is free-tier-only, and most free Node +
-MySQL hosting either requires a paid card on file or sleeps/expires
-quickly enough to be unreliable for a reviewer opening the link days
-later. Rather than fight that, the reproducible path is **Docker Compose,
-documented above** — `docker compose up --build` brings up the identical
-three-container stack anywhere Docker runs.
+The application is deployed using free-tier services:
 
-*(If deployed: add the live URL here — e.g. Render/Railway free tier for
-the backend + MySQL, Vercel/Netlify for the frontend. Update this section
-and the video once deployed.)*
+- **Frontend:** Vercel
+- **Backend/API:** Render
+- **Database:** Aiven MySQL
+
+The deployed frontend communicates with the Express backend hosted on Render, while the backend connects to the Aiven MySQL database.
+
+For local development and reproducibility, the complete stack can still be started using:
+
+```bash
+docker compose up --build
 
 ### API overview
 
@@ -531,7 +528,7 @@ existing one — also caught by the integration tests, not by hand-reading
 the code.
 
 ### Demo video
-_Add the Loom/video link here before submitting (max 6 minutes)._
+(https://drive.google.com/file/d/1ZYMje9D_oJlelMciOiIJfeaXpe1YaaVh/view?usp=drive_link)
 
 ---
 
